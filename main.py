@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 if __name__ == '__main__':
     question = sys.argv[1]
 
-    if question == '2':
+    if question == '2.ab':
         # Question 2.a
         file = open('rs_1.csv')
         csv_reader = csv.reader(file)
@@ -29,15 +29,12 @@ if __name__ == '__main__':
                 temp = (rain / (rain + no_rain))
             result.append(temp)
 
-        print('P(r | s,w) = {0}'.format(result[-1]))
-        print('rain: {0}'.format(rain))
-        print('no rain: {0}'.format(no_rain))
-        print('total: {0}'.format(rain+no_rain))
+        # print('P(r | s,w) = {0}'.format(result[-1]))
         plt.plot(result)
         plt.xlabel('Number of Samples')
         plt.ylabel('P(r | s,w)')
         plt.xscale('log')
-        plt.ylim([-0.2, 0.70])
+        plt.ylim([0, 0.40])
         plt.savefig('a.png')
 
         # Question 2.b
@@ -65,9 +62,43 @@ if __name__ == '__main__':
 
         plt.plot(result_plus_epsilon)
         plt.plot(result_minus_epsilon)
-        print(len(result_plus_epsilon))
-        print(len(result_minus_epsilon))
+        plt.ylim([-0.20, 0.70])
         plt.savefig('b.png')
 
+    elif question == '2.c':
+        # Question 2.a
+        file = open('lw_1.csv')
+        csv_reader = csv.reader(file)
+
+        rows = []
+        for row in csv_reader:
+            rows.append(row)
+
+        result = [0]
+        rain = no_rain = 0.0
+        temp_rain = temp_no_rain = 0.0
+        temp = 0
+
+        for i in range(len(rows)):
+            if rows[i][0] == '1':
+                rain += 1.0
+                temp_rain += float(rows[i][1])
+                temp = (temp_rain / (temp_rain + temp_no_rain))
+            elif rows[i][0] == '2':
+                no_rain += 1.0
+                temp_no_rain += float(rows[i][1])
+                temp = (temp_rain / (temp_rain + temp_no_rain))
+            result.append(temp)
+
+        print('P(r | s,w) = {0}'.format(result[-1]))
+        print('rain: {0}'.format(rain))
+        print('no rain: {0}'.format(no_rain))
+        print('total: {0}'.format(rain + no_rain))
+        plt.plot(result)
+        plt.xlabel('Number of Samples')
+        plt.ylabel('P(r | s,w)')
+        plt.xscale('log')
+        plt.ylim([0, 0.70])
+        plt.savefig('c.png')
     else:
         print('Invalid question number')
